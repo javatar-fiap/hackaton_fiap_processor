@@ -1,5 +1,7 @@
 package com.fiap.processor.core.domain;
 
+import org.json.JSONObject;
+
 public class VideoMessageModel {
 
     private String id;
@@ -7,6 +9,17 @@ public class VideoMessageModel {
     private String email;
     private String videoKeyS3;
     private Integer intervalSeconds;
+
+    public VideoMessageModel() {
+    }
+
+    public VideoMessageModel(JSONObject messageFormatted) {
+        this.id = messageFormatted.getString("id");
+        this.email = messageFormatted.getString("email");
+        this.user = messageFormatted.getString("user");
+        this.videoKeyS3 = messageFormatted.getString("videoKeyS3");
+        this.intervalSeconds = messageFormatted.getInt("intervalSeconds");
+    }
 
     public String getId() {
         return id;

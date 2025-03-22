@@ -4,7 +4,7 @@ import com.fiap.processor.core.application.enums.VideoStatus;
 import com.fiap.processor.core.domain.VideoMessageModel;
 import com.fiap.processor.core.domain.VideoModel;
 import com.fiap.processor.infrastructure.adapters.DownloadAdapter;
-import com.fiap.processor.infrastructure.adapters.ProcessorAdapter;
+import com.fiap.processor.infrastructure.adapters.FramesProcessorAdapter;
 import com.fiap.processor.infrastructure.adapters.SNSAdapter;
 import com.fiap.processor.infrastructure.exception.DownloadException;
 import com.fiap.processor.infrastructure.memory.LocalVideoRepository;
@@ -16,16 +16,16 @@ import java.util.Objects;
 @Service
 public class ProcessorVideoUseCase {
 
-    private final ProcessorAdapter processorAdapter;
+    private final FramesProcessorAdapter framesProcessorAdapter;
     private final LocalVideoRepository videoRepository;
     private final SNSAdapter snsAdapter;
     private final DownloadAdapter s3Service;
 
-    public ProcessorVideoUseCase(ProcessorAdapter processorAdapter,
+    public ProcessorVideoUseCase(FramesProcessorAdapter framesProcessorAdapter,
                                  LocalVideoRepository videoRepository,
                                  SNSAdapter snsAdapter,
                                  DownloadAdapter s3Service) {
-        this.processorAdapter = processorAdapter;
+        this.framesProcessorAdapter = framesProcessorAdapter;
         this.videoRepository = videoRepository;
         this.snsAdapter = snsAdapter;
         this.s3Service = s3Service;
@@ -45,7 +45,7 @@ public class ProcessorVideoUseCase {
             snsAdapter.publishMessage(videoMessage, VideoStatus.IN_PROGRESS, zipFileName, VideoStatus.IN_PROGRESS.toString());
             var downloadedFile = s3Service.downloadFile(videoMessage.getVideoKeyS3());
             var video = new VideoModel(downloadedFile.getAbsolutePath(), Duration.ZERO);
-            var extractedFrames = processorAdapter.extractFrames(video, zipFileName, intervalSeconds);
+            var extractedFrames = framesProcessorAdapter.extractor(video, zipFileName, intervalSeconds);
 
             if (Objects.nonNull(extractedFrames)) {
                 videoRepository.save(video);
