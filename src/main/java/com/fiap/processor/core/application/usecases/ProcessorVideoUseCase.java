@@ -32,7 +32,7 @@ public class ProcessorVideoUseCase {
     }
 
     public void execute(VideoMessageModel videoMessage) {
-        var zipFileName = videoMessage.getVideoKeyS3().replace(".mp4", ".zip");
+        var zipFileName = videoMessage.getKeyS3().replace(".mp4", ".zip");
         int intervalSeconds;
 
         if (Objects.nonNull(videoMessage.getIntervalSeconds())) {
@@ -43,7 +43,7 @@ public class ProcessorVideoUseCase {
 
         try {
             snsAdapter.publishMessage(videoMessage, VideoStatus.IN_PROGRESS, zipFileName, VideoStatus.IN_PROGRESS.toString());
-            var downloadedFile = s3Service.downloadFile(videoMessage.getVideoKeyS3());
+            var downloadedFile = s3Service.downloadFile(videoMessage.getKeyS3());
             var video = new VideoModel(downloadedFile.getAbsolutePath(), Duration.ZERO);
             var extractedFrames = framesProcessorAdapter.extractor(video, zipFileName, intervalSeconds);
 
