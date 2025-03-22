@@ -1,0 +1,25 @@
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
+    image: fiap-processor
+    container_name: fiap-processor
+    restart: always
+    ports:
+      - "80:8787"
+    networks:
+      - sql_network
+    environment:
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+      - SNS_KEY_AWS=${SNS_KEY_AWS}
+      - SQS_KEY_AWS=${SQS_KEY_AWS}
+      - S3_ZIP_KEY_AWS=${S3_ZIP_KEY_AWS}
+      - S3_VIDEO_KEY_AWS=${S3_VIDEO_KEY_AWS}
+
+networks:
+  sql_network:
+    driver: bridge
