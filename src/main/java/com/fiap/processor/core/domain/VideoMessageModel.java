@@ -5,9 +5,9 @@ import org.json.JSONObject;
 public class VideoMessageModel {
 
     private String id;
-    private String user;
+    private String username;
     private String email;
-    private String videoKeyS3;
+    private String keyS3;
     private Integer intervalSeconds;
 
     public VideoMessageModel() {
@@ -16,8 +16,8 @@ public class VideoMessageModel {
     public VideoMessageModel(JSONObject messageFormatted) {
         this.id = messageFormatted.getString("id");
         this.email = messageFormatted.getString("email");
-        this.user = messageFormatted.getString("user");
-        this.videoKeyS3 = messageFormatted.getString("videoKeyS3");
+        this.username = messageFormatted.getString("user");
+        this.keyS3 = messageFormatted.getString("videoKeyS3");
         this.intervalSeconds = messageFormatted.getInt("intervalSeconds");
     }
 
@@ -33,16 +33,12 @@ public class VideoMessageModel {
         return intervalSeconds;
     }
 
-    public void setIntervalSeconds(Integer intervalSeconds) {
-        this.intervalSeconds = intervalSeconds;
+    public String getKeyS3() {
+        return keyS3;
     }
 
-    public String getVideoKeyS3() {
-        return videoKeyS3;
-    }
-
-    public void setVideoKeyS3(String videoKeyS3) {
-        this.videoKeyS3 = videoKeyS3;
+    public void setKeyS3(String keyS3) {
+        this.keyS3 = keyS3;
     }
 
     public String getEmail() {
@@ -53,11 +49,11 @@ public class VideoMessageModel {
         this.email = email;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
